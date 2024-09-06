@@ -1,26 +1,36 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    // Yeni bir komut kaydediyoruz
+    let disposable = vscode.commands.registerCommand('extension.addComment', () => {
+        // Şu anki açık editörü alıyoruz
+        const editor = vscode.window.activeTextEditor;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "let-me-comment-for-you" is now active!');
+        if (editor) {
+            const document = editor.document;
+            const selection = editor.selection;
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('let-me-comment-for-you.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from let me comment for you!');
-	});
+            // Seçili olan metin ya da mevcut imleç pozisyonunu alıyoruz
+            const selectedText = document.getText(selection);
 
-	context.subscriptions.push(disposable);
+            // Yorum metni
+            const commentText = '// Let me comment for you';
+
+            editor.edit(editBuilder => {
+                if (selectedText) {
+                    // Eğer metin seçiliyse, seçilen metnin üzerine yorum ekliyoruz
+                    editBuilder.replace(selection, `${commentText} ${selectedText}`);
+                } else {
+                    // Eğer metin seçili değilse, imlecin olduğu satıra yorum ekliyoruz
+                    const position = selection.active;
+                    editBuilder.insert(position, `${commentText}\n`);
+                }
+            });
+        }
+    });
+
+    // Komutu kayıt ediyoruz
+    context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}

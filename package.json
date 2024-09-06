@@ -1,47 +1,33 @@
 {
   "name": "let-me-comment-for-you",
-  "displayName": "let me comment for you",
-  "description": "Let Me Comment For You",
+  "displayName": "Let Me Comment For You",
+  "description": "Automatically adds a comment for you",
   "version": "0.0.1",
+  "publisher": "your-name",
   "engines": {
-    "vscode": "^1.93.0"
+      "vscode": "^1.60.0"
   },
-  "categories": [
-    "Other"
+  "activationEvents": [
+      "onCommand:extension.addComment"
   ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "let-me-comment-for-you.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+      "commands": [
+          {
+              "command": "extension.addComment",
+              "title": "Let me comment for you"
+          }
+      ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "eslint src",
-    "test": "vscode-test"
+      "vscode:prepublish": "npm run compile",
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./",
+      "postinstall": "node ./out/install.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.93.0",
-    "@types/mocha": "^10.0.7",
-    "@types/node": "20.x",
-    "@typescript-eslint/eslint-plugin": "^8.3.0",
-    "@typescript-eslint/parser": "^8.3.0",
-    "eslint": "^9.9.1",
-    "typescript": "^5.5.4",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+      "@types/vscode": "^1.60.0",
+      "typescript": "^4.0.0",
+      "vscode-test": "^1.4.0"
   }
 }
